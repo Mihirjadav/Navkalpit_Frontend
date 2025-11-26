@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -45,80 +46,52 @@ export default function Footer() {
             <h3 className="text-white font-bold text-xl mb-8">
               Be in the Know
             </h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequuntur, quod aut officiis, voluptatem fugit reprehenderit soluta culpa, beatae modi quidem? Possimus repellat tempora ipsum quos voluptatum laborum nesciunt alias.</p>
-            {/* <form className="space-y-6">
-              <p className="text-slate-400 text-sm leading-relaxed">
-                I'm a paragraph. Click here to add your own text and edit me.
-                Let your users get to know you.
-              </p>
-              <div>
-                <label className="block text-sm font-medium text-white mb-3">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder=""
-                  className="w-full px-4 py-3 bg-transparent border border-slate-600 rounded-full text-white placeholder-slate-500 focus:outline-none focus:border-white transition-colors"
-                />
-              </div>
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="subscribe"
-                  className="w-5 h-5 border border-slate-600 rounded accent-white"
-                />
-                <label htmlFor="subscribe" className="text-sm text-slate-400">
-                  Yes, subscribe me to your newsletter.
-                </label>
-              </div>
-              <button
-                type="submit"
-                className="px-8 py-2 bg-white text-slate-900 font-bold rounded-full hover:shadow-lg transition-all"
-              >
-                Submit
-              </button>
-            </form> */}
+            <p className="text-slate-400 text-sm">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
+              consequuntur, quod aut officiis, voluptatem fugit reprehenderit
+              soluta culpa, beatae modi quidem? Possimus repellat tempora ipsum
+              quos voluptatum laborum nesciunt alias.
+            </p>
           </div>
-
-          {/* Menu Section */}
           <div>
             <h3 className="text-white font-bold text-xl mb-8">Menu</h3>
             <nav className="space-y-4">
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/"
                     className="text-slate-300 hover:text-white transition-colors"
                   >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/service"
                     className="text-slate-300 hover:text-white transition-colors"
                   >
-                    Services
-                  </a>
+                    Service
+                  </Link>
                 </li>
+
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/technology"
                     className="text-slate-300 hover:text-white transition-colors"
                   >
-                    About
-                  </a>
+                    Technology
+                  </Link>
                 </li>
-                
+
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/shop"
                     className="text-slate-300 hover:text-white transition-colors"
                   >
-                    Contact
-                  </a>
+                    Shop
+                  </Link>
                 </li>
-                
+
               </ul>
             </nav>
           </div>
@@ -129,10 +102,11 @@ export default function Footer() {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="https://www.facebook.com/share/19tdFeRrnR/" target="_blank"
+                  href="https://www.facebook.com/share/19tdFeRrnR/"
+                  target="_blank"
                   className="text-slate-300 hover:text-white transition-colors flex items-center gap-2"
                 >
-                   Facebook
+                  Facebook
                 </a>
               </li>
               <li>
@@ -145,7 +119,8 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.instagram.com/navkalpit2610?igsh=MTlveXRwdjRubWR0dQ==" target="_blank"
+                  href="https://www.instagram.com/navkalpit2610?igsh=MTlveXRwdjRubWR0dQ=="
+                  target="_blank"
                   className="text-slate-300 hover:text-white transition-colors flex items-center gap-2"
                 >
                   Instagram
@@ -153,13 +128,13 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://youtube.com/@navkalpitofficial?si=2qpautCVcytz4wuS" target="_blank"
+                  href="https://youtube.com/@navkalpitofficial?si=2qpautCVcytz4wuS"
+                  target="_blank"
                   className="text-slate-300 hover:text-white transition-colors flex items-center gap-2"
                 >
                   Youtube
                 </a>
               </li>
-              
             </ul>
           </div>
         </div>

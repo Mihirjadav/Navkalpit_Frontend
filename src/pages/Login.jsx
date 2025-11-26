@@ -22,14 +22,13 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-900 to-black text-slate-100 py-20">
+    <div className="min-h-screen bg-gradient-to-black from-slate-900 to-black text-slate-100 py-20">
       <div className="max-w-md mx-auto px-6">
         <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-8 shadow-md">
           <h2 className="text-2xl font-bold mb-2">Log In</h2>
           <p className="text-sm text-slate-400 mb-6">Sign in to your account</p>
 
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-
             {/* Email */}
             <div>
               <label htmlFor="email" className="text-sm text-slate-300">
@@ -60,6 +59,15 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full mt-1 p-3 rounded-md bg-slate-900 border border-slate-700"
               />
+              {/* Forgot Password link */}
+              <div className="mt-2 text-right">
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-blue-300 hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
             </div>
 
             {/* Error Message */}
