@@ -1,14 +1,29 @@
 import React, { useState, useRef } from "react";
 
 export default function Technology() {
-  const [tech, setTech] = useState(null); // 'FDM' or 'SLA'
+  const [tech, setTech] = useState(null); // 'FDM' or 'STL'
   const [material, setMaterial] = useState(null);
   const [color, setColor] = useState(null);
   const [file, setFile] = useState(null);
   const [verified, setVerified] = useState(false);
   const fileRef = useRef(null);
 
-  const fdmMaterials = ["PLA", "ABT", "TPN", "DEN"];
+  const materialPrices = {
+    PLA: 5,
+    ABS: 12,
+    PETG: 18,
+    TPU: 22,
+    Nylon: 25,
+    "PLA+ (Premium)": 12,
+    "Wood PLA": 20,
+    "Carbon Fiber PLA": 40,
+    "Carbon Fiber Nylon": 70,
+  };
+
+  const fdmMaterials = Object.keys(materialPrices);
+
+  const [showQuotation, setShowQuotation] = useState(false);
+  const [estimatedWeight, setEstimatedWeight] = useState(0); // grams
   const colors = [
     "#111827",
     "#0ea5e9",
@@ -80,14 +95,14 @@ export default function Technology() {
               FDM
             </button>
             <button
-              onClick={() => onSelectTech("SLA")}
+              onClick={() => onSelectTech("STL")}
               className={`px-5 py-3 rounded-xl font-semibold transition ${
-                tech === "SLA"
+                tech === "STL"
                   ? "bg-white text-slate-900 border-transparent"
                   : "bg-slate-700/60 text-slate-200 border-slate-600"
               }`}
             >
-              SLA
+              STL
             </button>
           </div>
         </section>
@@ -103,13 +118,16 @@ export default function Technology() {
                 <button
                   key={m}
                   onClick={() => setMaterial(m)}
-                  className={`px-4 py-2 rounded-lg border font-medium ${
+                  className={`px-4 py-2 rounded-lg border font-medium flex items-center gap-3 ${
                     material === m
                       ? "bg-white text-slate-900 border-transparent"
                       : "bg-slate-700/60 text-slate-200 border-slate-600"
                   }`}
                 >
-                  {m}
+                  <span>{m}</span>
+                  <span className="text-xs text-slate-400">
+                    ₹{materialPrices[m]}/g
+                  </span>
                 </button>
               ))}
             </div>
@@ -236,6 +254,9 @@ export default function Technology() {
                     Material: {material || "—"}
                   </p>
                   <p className="text-xs text-slate-400">
+                    Price/g: {material ? `₹${materialPrices[material]}/g` : "—"}
+                  </p>
+                  <p className="text-xs text-slate-400">
                     Color:{" "}
                     {color ? (
                       <span
@@ -270,6 +291,9 @@ export default function Technology() {
         <section className="text-center">
           <button
             disabled={!verified}
+            onClick={() => {
+              if (verified) setShowQuotation(true);
+            }}
             className={`px-8 py-3 rounded-full font-semibold ${
               verified
                 ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
@@ -279,6 +303,65 @@ export default function Technology() {
             Go to Next
           </button>
         </section>
+
+        {showQuotation && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-900 text-slate-100 rounded-2xl max-w-2xl w-full p-6 border border-slate-700">
+              <h3 className="text-xl font-bold mb-3">Quotation Summary</h3>
+              <div className="text-sm text-slate-300 space-y-2 mb-4">
+                <div>Technology: {tech}</div>
+                <div>Material: {material || "—"}</div>
+                <div>
+                  Price per gram:{" "}
+                  {material ? `₹${materialPrices[material]}/g` : "—"}
+                </div>
+                <div>Color: {color || "—"}</div>
+                <div>File: {file ? file.name : "—"}</div>
+              </div>
+
+              <div className="mb-4">
+                <label className="text-sm text-slate-400">
+                  Estimated Weight (grams)
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  value={estimatedWeight}
+                  onChange={(e) => setEstimatedWeight(Number(e.target.value))}
+                  className="mt-2 w-full p-2 rounded-md bg-slate-800 border border-slate-700 text-slate-100"
+                />
+              </div>
+
+              <div className="text-right text-lg font-semibold">
+                Total Price:{" "}
+                {material
+                  ? `₹${(estimatedWeight * materialPrices[material]).toFixed(
+                      2
+                    )}`
+                  : "—"}
+              </div>
+
+              <div className="mt-6 flex gap-3 justify-end">
+                <button
+                  onClick={() => setShowQuotation(false)}
+                  className="px-4 py-2 rounded-md bg-slate-700 text-slate-200"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    // in future: proceed to checkout / save quotation
+                    alert("Quotation saved/confirmed (placeholder)");
+                    setShowQuotation(false);
+                  }}
+                  className="px-4 py-2 rounded-md bg-linear-to-r from-blue-600 to-purple-600 text-white"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
