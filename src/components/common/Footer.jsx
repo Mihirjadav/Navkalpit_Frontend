@@ -29,10 +29,10 @@ export default function Footer() {
               </div>
               <div>
                 <a
-                  href="tel:+919999999999"
+                  href="tel:+917383881288"
                   className="text-slate-300 hover:text-white transition-colors"
                 >
-                  +91 88491 07626
+                  +91 73838 81288
                 </a>
               </div>
             </div>
@@ -47,10 +47,8 @@ export default function Footer() {
               Be in the Know
             </h3>
             <p className="text-slate-400 text-sm">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
-              consequuntur, quod aut officiis, voluptatem fugit reprehenderit
-              soluta culpa, beatae modi quidem? Possimus repellat tempora ipsum
-              quos voluptatum laborum nesciunt alias.
+              We are providing a best service of 3D Printing of your design.
+              High-quality 3D printing solutions with precision and reliability.
             </p>
           </div>
           <div>

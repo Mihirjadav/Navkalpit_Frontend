@@ -1,8 +1,8 @@
-// src/components/register/StudentForm.jsx
 import React, { useState } from "react";
 
 export default function StudentForm() {
   const [form, setForm] = useState({
+    username: "",
     fullName: "",
     email: "",
     password: "",
@@ -24,11 +24,15 @@ export default function StudentForm() {
 
   const [errors, setErrors] = useState({});
 
-  const update = (key, value) =>
-    setForm((f) => ({ ...f, [key]: value }));
+  const update = (key, value) => setForm((f) => ({ ...f, [key]: value }));
 
   function validate() {
     const e = {};
+
+    if (!form.username.trim()) e.username = "Username is required";
+    if (!/^[a-zA-Z0-9_.-]{3,20}$/.test(form.username))
+      e.username =
+        "Username must be 3–20 characters (letters, numbers, _. - allowed)";
 
     if (!form.fullName.trim()) e.fullName = "Full Name is required";
     if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(form.email))
@@ -42,13 +46,11 @@ export default function StudentForm() {
     if (!form.state) e.state = "State is required";
     if (!form.city) e.city = "City is required";
 
-    if (!form.universityName)
-      e.universityName = "University Name is required";
+    if (!form.universityName) e.universityName = "University Name is required";
     if (!form.department) e.department = "Department is required";
     if (!form.course) e.course = "Course is required";
     if (!form.semester) e.semester = "Semester is required";
-    if (!form.endOfSemester)
-      e.endOfSemester = "End of Semester is required";
+    if (!form.endOfSemester) e.endOfSemester = "End of Semester is required";
 
     if (!/^[0-9]{12}$/.test(form.aadharNumber || ""))
       e.aadharNumber = "Aadhar Number must be 12 digits";
@@ -58,11 +60,9 @@ export default function StudentForm() {
     if (!/^[0-9]{7,15}$/.test(form.mobileNumber || ""))
       e.mobileNumber = "Mobile Number must be 7–15 digits";
 
-    if (!form.enrollmentNo)
-      e.enrollmentNo = "Enrollment No is required";
+    if (!form.enrollmentNo) e.enrollmentNo = "Enrollment No is required";
 
-    if (!form.collegeIdCard)
-      e.collegeIdCard = "College ID Card is required";
+    if (!form.collegeIdCard) e.collegeIdCard = "College ID Card is required";
 
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -77,7 +77,18 @@ export default function StudentForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Full Name + Email */}
+      <div>
+        <label className="text-sm">Username</label>
+        <input
+          className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
+          value={form.username}
+          onChange={(e) => update("username", e.target.value)}
+        />
+        {errors.username && (
+          <p className="text-xs text-rose-400 mt-1">{errors.username}</p>
+        )}
+      </div>
+
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label className="text-sm">Full Name</label>
@@ -124,9 +135,7 @@ export default function StudentForm() {
             type="password"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.confirmPassword}
-            onChange={(e) =>
-              update("confirmPassword", e.target.value)
-            }
+            onChange={(e) => update("confirmPassword", e.target.value)}
           />
           {errors.confirmPassword && (
             <p className="text-xs text-rose-400 mt-1">
@@ -196,9 +205,7 @@ export default function StudentForm() {
             onChange={(e) => update("department", e.target.value)}
           />
           {errors.department && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.department}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.department}</p>
           )}
         </div>
         <div>
@@ -209,9 +216,7 @@ export default function StudentForm() {
             onChange={(e) => update("course", e.target.value)}
           />
           {errors.course && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.course}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.course}</p>
           )}
         </div>
       </div>
@@ -226,9 +231,7 @@ export default function StudentForm() {
             onChange={(e) => update("semester", e.target.value)}
           />
           {errors.semester && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.semester}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.semester}</p>
           )}
         </div>
         <div>
@@ -237,14 +240,10 @@ export default function StudentForm() {
             placeholder="e.g. Dec 2026"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.endOfSemester}
-            onChange={(e) =>
-              update("endOfSemester", e.target.value)
-            }
+            onChange={(e) => update("endOfSemester", e.target.value)}
           />
           {errors.endOfSemester && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.endOfSemester}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.endOfSemester}</p>
           )}
         </div>
       </div>
@@ -263,9 +262,7 @@ export default function StudentForm() {
             }
           />
           {errors.aadharNumber && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.aadharNumber}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.aadharNumber}</p>
           )}
         </div>
         <div>
@@ -294,9 +291,7 @@ export default function StudentForm() {
             }
           />
           {errors.mobileNumber && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.mobileNumber}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.mobileNumber}</p>
           )}
         </div>
         <div>
@@ -304,14 +299,10 @@ export default function StudentForm() {
           <input
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.enrollmentNo}
-            onChange={(e) =>
-              update("enrollmentNo", e.target.value)
-            }
+            onChange={(e) => update("enrollmentNo", e.target.value)}
           />
           {errors.enrollmentNo && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.enrollmentNo}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.enrollmentNo}</p>
           )}
         </div>
         <div>
@@ -319,14 +310,10 @@ export default function StudentForm() {
           <input
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.collegeIdCard}
-            onChange={(e) =>
-              update("collegeIdCard", e.target.value)
-            }
+            onChange={(e) => update("collegeIdCard", e.target.value)}
           />
           {errors.collegeIdCard && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.collegeIdCard}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.collegeIdCard}</p>
           )}
         </div>
       </div>

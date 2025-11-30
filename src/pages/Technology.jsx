@@ -6,24 +6,29 @@ export default function Technology() {
   const [color, setColor] = useState(null);
   const [file, setFile] = useState(null);
   const [verified, setVerified] = useState(false);
-  const fileRef = useRef(null);
-
-  const materialPrices = {
-    PLA: 5,
-    ABS: 12,
-    PETG: 18,
-    TPU: 22,
-    Nylon: 25,
-    "PLA+ (Premium)": 12,
-    "Wood PLA": 20,
-    "Carbon Fiber PLA": 40,
-    "Carbon Fiber Nylon": 70,
-  };
-
-  const fdmMaterials = Object.keys(materialPrices);
-
   const [showQuotation, setShowQuotation] = useState(false);
   const [estimatedWeight, setEstimatedWeight] = useState(0); // grams
+  const fileRef = useRef(null);
+
+  // Price per gram for each technology
+  const materialPricesByTech = {
+    FDM: {
+      PLA: 5,
+      ABS: 12,
+      PETG: 18,
+      TPU: 22,
+      Nylon: 25,
+      "PLA+ (Premium)": 12,
+      "Wood PLA": 20,
+      "Carbon Fiber PLA": 40,
+      "Carbon Fiber Nylon": 70,
+    },
+    STL: {
+      "iTech Premium Standard 8K Resin": 3.6,
+      ABS: 6.5,
+    },
+  };
+
   const colors = [
     "#111827",
     "#0ea5e9",
@@ -32,6 +37,10 @@ export default function Technology() {
     "#10b981",
     "#8b5cf6",
   ];
+
+  const materialsForCurrentTech = tech
+    ? Object.keys(materialPricesByTech[tech] || {})
+    : [];
 
   function handleFile(e) {
     const f = e.target.files?.[0];
@@ -51,6 +60,7 @@ export default function Technology() {
     setColor(null);
     setFile(null);
     setVerified(false);
+    setEstimatedWeight(0);
     if (fileRef.current) fileRef.current.value = "";
   }
 
@@ -63,11 +73,14 @@ export default function Technology() {
 
   const canVerify = () => {
     if (!tech) return false;
-    if (tech === "FDM" && !material) return false;
+    if (!material) return false; // material required for BOTH FDM & STL
     if (!color) return false;
     if (!file) return false;
     return true;
   };
+
+  const currentPricePerGram =
+    tech && material ? materialPricesByTech[tech]?.[material] : null;
 
   return (
     <div className="min-h-screen bg-linear-to-b from-slate-900 to-black text-slate-100 py-20">
@@ -75,8 +88,7 @@ export default function Technology() {
         <header className="text-center mb-10">
           <h1 className="text-4xl font-bold">Choose Technology & Upload</h1>
           <p className="text-slate-400 mt-2">
-            Select technology, material (FDM), color, upload STL and verify
-            design.
+            Select technology, material, color, upload STL and verify design.
           </p>
         </header>
 
@@ -114,7 +126,7 @@ export default function Technology() {
               2. Choose Material (FDM)
             </h2>
             <div className="flex flex-wrap gap-3">
-              {fdmMaterials.map((m) => (
+              {materialsForCurrentTech.map((m) => (
                 <button
                   key={m}
                   onClick={() => setMaterial(m)}
@@ -126,7 +138,34 @@ export default function Technology() {
                 >
                   <span>{m}</span>
                   <span className="text-xs text-slate-400">
-                    ₹{materialPrices[m]}/g
+                    ₹{materialPricesByTech.FDM[m]}/g
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Material (STL) */}
+        {tech === "STL" && (
+          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
+            <h2 className="text-lg font-semibold mb-4">
+              2. Choose Material (STL)
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {materialsForCurrentTech.map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setMaterial(m)}
+                  className={`px-4 py-2 rounded-lg border font-medium flex items-center gap-3 ${
+                    material === m
+                      ? "bg-white text-slate-900 border-transparent"
+                      : "bg-slate-700/60 text-slate-200 border-slate-600"
+                  }`}
+                >
+                  <span>{m}</span>
+                  <span className="text-xs text-slate-400">
+                    ₹{materialPricesByTech.STL[m]}/g
                   </span>
                 </button>
               ))}
@@ -254,19 +293,24 @@ export default function Technology() {
                     Material: {material || "—"}
                   </p>
                   <p className="text-xs text-slate-400">
-                    Price/g: {material ? `₹${materialPrices[material]}/g` : "—"}
+                    Price/g:{" "}
+                    {currentPricePerGram
+                      ? `₹${currentPricePerGram}/g`
+                      : "—"}
                   </p>
                   <p className="text-xs text-slate-400">
                     Color:{" "}
                     {color ? (
-                      <span
-                        className="inline-block w-3 h-3 rounded-full align-middle mr-2"
-                        style={{ background: color }}
-                      />
+                      <>
+                        <span
+                          className="inline-block w-3 h-3 rounded-full align-middle mr-2"
+                          style={{ background: color }}
+                        />
+                        {color}
+                      </>
                     ) : (
                       "—"
                     )}
-                    {color || ""}
                   </p>
                 </div>
                 <div>
@@ -275,7 +319,7 @@ export default function Technology() {
                     disabled={!canVerify()}
                     className={`w-full py-2 rounded-md text-sm font-semibold ${
                       canVerify()
-                        ? "bg-linear-to-r from-blue-600 to-purple-600 text-white"
+                        ? "bg-white text-black rounded-md font-medium"
                         : "bg-slate-700 text-slate-400 cursor-not-allowed"
                     }`}
                   >
@@ -296,7 +340,7 @@ export default function Technology() {
             }}
             className={`px-8 py-3 rounded-full font-semibold ${
               verified
-                ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                ? "bg-white text-black rounded-md font-medium shadow-lg"
                 : "bg-slate-700 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -304,6 +348,7 @@ export default function Technology() {
           </button>
         </section>
 
+        {/* Quotation modal */}
         {showQuotation && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
             <div className="bg-slate-900 text-slate-100 rounded-2xl max-w-2xl w-full p-6 border border-slate-700">
@@ -313,7 +358,9 @@ export default function Technology() {
                 <div>Material: {material || "—"}</div>
                 <div>
                   Price per gram:{" "}
-                  {material ? `₹${materialPrices[material]}/g` : "—"}
+                  {currentPricePerGram
+                    ? `₹${currentPricePerGram}/g`
+                    : "—"}
                 </div>
                 <div>Color: {color || "—"}</div>
                 <div>File: {file ? file.name : "—"}</div>
@@ -327,18 +374,19 @@ export default function Technology() {
                   type="number"
                   min={0}
                   value={estimatedWeight}
-                  onChange={(e) => setEstimatedWeight(Number(e.target.value))}
+                  onChange={(e) =>
+                    setEstimatedWeight(Number(e.target.value) || 0)
+                  }
                   className="mt-2 w-full p-2 rounded-md bg-slate-800 border border-slate-700 text-slate-100"
                 />
               </div>
 
               <div className="text-right text-lg font-semibold">
                 Total Price:{" "}
-                {material
-                  ? `₹${(estimatedWeight * materialPrices[material]).toFixed(
-                      2
-                    )}`
+                {currentPricePerGram
+                  ? `₹${(estimatedWeight * currentPricePerGram).toFixed(2)}`
                   : "—"}
+                   + 18% GST
               </div>
 
               <div className="mt-6 flex gap-3 justify-end">
@@ -350,11 +398,10 @@ export default function Technology() {
                 </button>
                 <button
                   onClick={() => {
-                    // in future: proceed to checkout / save quotation
                     alert("Quotation saved/confirmed (placeholder)");
                     setShowQuotation(false);
                   }}
-                  className="px-4 py-2 rounded-md bg-linear-to-r from-blue-600 to-purple-600 text-white"
+                  className="px-4 py-2 rounded-md bg-white text-black font-medium"
                 >
                   Confirm
                 </button>

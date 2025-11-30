@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 export default function StartupForm() {
   const [form, setForm] = useState({
+    username: "",
     companyName: "",
     companyEmail: "",
     password: "",
@@ -21,14 +22,16 @@ export default function StartupForm() {
 
   const [errors, setErrors] = useState({});
 
-  const update = (k, v) =>
-    setForm((f) => ({ ...f, [k]: v }));
+  const update = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   function validate() {
     const e = {};
+    if (!form.username.trim()) e.username = "Username is required";
+    if (!/^[a-zA-Z0-9_.-]{3,20}$/.test(form.username))
+      e.username =
+        "Username must be 3–20 characters (letters, numbers, _. - allowed)";
 
-    if (!form.companyName.trim())
-      e.companyName = "Company Name is required";
+    if (!form.companyName.trim()) e.companyName = "Company Name is required";
     if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(form.companyEmail))
       e.companyEmail = "Valid Company Email Address is required";
 
@@ -36,36 +39,29 @@ export default function StartupForm() {
     if (form.password !== form.confirmPassword)
       e.confirmPassword = "Passwords do not match";
 
-    if (!form.ownerName.trim())
-      e.ownerName = "Owner Name is required";
+    if (!form.ownerName.trim()) e.ownerName = "Owner Name is required";
 
     if (!/^[0-9]{7,15}$/.test(form.companyMobile || ""))
       e.companyMobile = "Company Mobile must be 7–15 digits";
 
-    if (!form.companyType.trim())
-      e.companyType = "Company type is required";
+    if (!form.companyType.trim()) e.companyType = "Company type is required";
 
     if (!/^[0-9]{12}$/.test(form.ownerAadhar || ""))
       e.ownerAadhar = "Owner Aadhar must be 12 digits";
 
-    if (!form.gstNumber.trim())
-      e.gstNumber = "GST Number is required";
+    if (!form.gstNumber.trim()) e.gstNumber = "GST Number is required";
 
     if (!form.companyDescription.trim())
       e.companyDescription = "Description is required";
     else {
       const wordCount = form.companyDescription.trim().split(/\s+/).length;
-      if (wordCount > 200)
-        e.companyDescription = "Max 200 words allowed";
+      if (wordCount > 200) e.companyDescription = "Max 200 words allowed";
     }
 
     if (form.dpCertificate === "yes" && !form.dpCertificateNumber.trim())
       e.dpCertificateNumber = "DP Certificate Number required";
 
-    if (
-      form.udyamCertificate === "yes" &&
-      !form.udyamCertificateNumber.trim()
-    )
+    if (form.udyamCertificate === "yes" && !form.udyamCertificateNumber.trim())
       e.udyamCertificateNumber = "Udyam Certificate Number required";
 
     setErrors(e);
@@ -82,6 +78,20 @@ export default function StartupForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Company Name + Email */}
+
+      {/* Username */}
+      <div>
+        <label className="text-sm">Username</label>
+        <input
+          className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
+          value={form.username}
+          onChange={(e) => update("username", e.target.value)}
+        />
+        {errors.username && (
+          <p className="text-xs text-rose-400 mt-1">{errors.username}</p>
+        )}
+      </div>
+
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label className="text-sm">Company Name</label>
@@ -91,9 +101,7 @@ export default function StartupForm() {
             onChange={(e) => update("companyName", e.target.value)}
           />
           {errors.companyName && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyName}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyName}</p>
           )}
         </div>
         <div>
@@ -105,9 +113,7 @@ export default function StartupForm() {
             onChange={(e) => update("companyEmail", e.target.value)}
           />
           {errors.companyEmail && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyEmail}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyEmail}</p>
           )}
         </div>
       </div>
@@ -132,9 +138,7 @@ export default function StartupForm() {
             type="password"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.confirmPassword}
-            onChange={(e) =>
-              update("confirmPassword", e.target.value)
-            }
+            onChange={(e) => update("confirmPassword", e.target.value)}
           />
           {errors.confirmPassword && (
             <p className="text-xs text-rose-400 mt-1">
@@ -154,9 +158,7 @@ export default function StartupForm() {
             onChange={(e) => update("ownerName", e.target.value)}
           />
           {errors.ownerName && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.ownerName}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.ownerName}</p>
           )}
         </div>
         <div>
@@ -170,18 +172,14 @@ export default function StartupForm() {
             }
           />
           {errors.companyMobile && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyMobile}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyMobile}</p>
           )}
         </div>
       </div>
 
       {/* DP Certificate */}
       <div>
-        <label className="text-sm">
-          DP_id_Certificate (Yes / No)
-        </label>
+        <label className="text-sm">DP_id_Certificate (Yes / No)</label>
         <div className="flex gap-3 mt-1 items-center">
           <select
             className="w-40 p-2 rounded-md bg-slate-900 border border-slate-700"
@@ -196,9 +194,7 @@ export default function StartupForm() {
               placeholder="Certificate Number"
               className="flex-1 p-2 rounded-md bg-slate-900 border border-slate-700"
               value={form.dpCertificateNumber}
-              onChange={(e) =>
-                update("dpCertificateNumber", e.target.value)
-              }
+              onChange={(e) => update("dpCertificateNumber", e.target.value)}
             />
           )}
         </div>
@@ -211,16 +207,12 @@ export default function StartupForm() {
 
       {/* Udyam Certificate */}
       <div>
-        <label className="text-sm">
-          Udyam Certificate (Yes / No)
-        </label>
+        <label className="text-sm">Udyam Certificate (Yes / No)</label>
         <div className="flex gap-3 mt-1 items-center">
           <select
             className="w-40 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.udyamCertificate}
-            onChange={(e) =>
-              update("udyamCertificate", e.target.value)
-            }
+            onChange={(e) => update("udyamCertificate", e.target.value)}
           >
             <option value="no">No</option>
             <option value="yes">Yes</option>
@@ -230,9 +222,7 @@ export default function StartupForm() {
               placeholder="Certificate Number"
               className="flex-1 p-2 rounded-md bg-slate-900 border border-slate-700"
               value={form.udyamCertificateNumber}
-              onChange={(e) =>
-                update("udyamCertificateNumber", e.target.value)
-              }
+              onChange={(e) => update("udyamCertificateNumber", e.target.value)}
             />
           )}
         </div>
@@ -254,9 +244,7 @@ export default function StartupForm() {
             onChange={(e) => update("companyType", e.target.value)}
           />
           {errors.companyType && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyType}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyType}</p>
           )}
         </div>
         <div>
@@ -271,9 +259,7 @@ export default function StartupForm() {
             }
           />
           {errors.ownerAadhar && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.ownerAadhar}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.ownerAadhar}</p>
           )}
         </div>
         <div>
@@ -284,9 +270,7 @@ export default function StartupForm() {
             onChange={(e) => update("gstNumber", e.target.value)}
           />
           {errors.gstNumber && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.gstNumber}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.gstNumber}</p>
           )}
         </div>
       </div>
@@ -298,9 +282,7 @@ export default function StartupForm() {
           rows={4}
           className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
           value={form.companyDescription}
-          onChange={(e) =>
-            update("companyDescription", e.target.value)
-          }
+          onChange={(e) => update("companyDescription", e.target.value)}
         />
         {errors.companyDescription && (
           <p className="text-xs text-rose-400 mt-1">

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 export default function CommercialForm() {
   const [form, setForm] = useState({
+    username: "",
     companyName: "",
     companyEmail: "",
     password: "",
@@ -17,14 +18,17 @@ export default function CommercialForm() {
 
   const [errors, setErrors] = useState({});
 
-  const update = (k, v) =>
-    setForm((f) => ({ ...f, [k]: v }));
+  const update = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   function validate() {
     const e = {};
 
-    if (!form.companyName.trim())
-      e.companyName = "Company Name is required";
+    if (!form.username.trim()) e.username = "Username is required";
+    if (!/^[a-zA-Z0-9_.-]{3,20}$/.test(form.username))
+      e.username =
+        "Username must be 3–20 characters (letters, numbers, _. - allowed)";
+
+    if (!form.companyName.trim()) e.companyName = "Company Name is required";
     if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(form.companyEmail))
       e.companyEmail = "Valid Company Email Address is required";
 
@@ -32,14 +36,11 @@ export default function CommercialForm() {
     if (form.password !== form.confirmPassword)
       e.confirmPassword = "Passwords do not match";
 
-    if (!form.gstNumber.trim())
-      e.gstNumber = "GST Number is required";
+    if (!form.gstNumber.trim()) e.gstNumber = "GST Number is required";
 
-    if (!form.companyType.trim())
-      e.companyType = "Company Type is required";
+    if (!form.companyType.trim()) e.companyType = "Company Type is required";
 
-    if (!form.businessType.trim())
-      e.businessType = "Business type is required";
+    if (!form.businessType.trim()) e.businessType = "Business type is required";
 
     if (!/^[0-9]{7,15}$/.test(form.companyMobile || ""))
       e.companyMobile = "Company Mobile must be 7–15 digits";
@@ -63,6 +64,18 @@ export default function CommercialForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="text-sm">Username</label>
+        <input
+          className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
+          value={form.username}
+          onChange={(e) => update("username", e.target.value)}
+        />
+        {errors.username && (
+          <p className="text-xs text-rose-400 mt-1">{errors.username}</p>
+        )}
+      </div>
+
       {/* Company Name + Email */}
       <div className="grid md:grid-cols-2 gap-4">
         <div>
@@ -73,9 +86,7 @@ export default function CommercialForm() {
             onChange={(e) => update("companyName", e.target.value)}
           />
           {errors.companyName && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyName}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyName}</p>
           )}
         </div>
         <div>
@@ -87,9 +98,7 @@ export default function CommercialForm() {
             onChange={(e) => update("companyEmail", e.target.value)}
           />
           {errors.companyEmail && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyEmail}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyEmail}</p>
           )}
         </div>
       </div>
@@ -114,9 +123,7 @@ export default function CommercialForm() {
             type="password"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.confirmPassword}
-            onChange={(e) =>
-              update("confirmPassword", e.target.value)
-            }
+            onChange={(e) => update("confirmPassword", e.target.value)}
           />
           {errors.confirmPassword && (
             <p className="text-xs text-rose-400 mt-1">
@@ -136,9 +143,7 @@ export default function CommercialForm() {
             onChange={(e) => update("gstNumber", e.target.value)}
           />
           {errors.gstNumber && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.gstNumber}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.gstNumber}</p>
           )}
         </div>
         <div>
@@ -150,9 +155,7 @@ export default function CommercialForm() {
             onChange={(e) => update("companyType", e.target.value)}
           />
           {errors.companyType && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyType}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyType}</p>
           )}
         </div>
         <div>
@@ -164,9 +167,7 @@ export default function CommercialForm() {
             onChange={(e) => update("businessType", e.target.value)}
           />
           {errors.businessType && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.businessType}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.businessType}</p>
           )}
         </div>
       </div>
@@ -184,9 +185,7 @@ export default function CommercialForm() {
             }
           />
           {errors.companyMobile && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.companyMobile}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.companyMobile}</p>
           )}
         </div>
         <div>
@@ -201,9 +200,7 @@ export default function CommercialForm() {
             }
           />
           {errors.aadharNumber && (
-            <p className="text-xs text-rose-400 mt-1">
-              {errors.aadharNumber}
-            </p>
+            <p className="text-xs text-rose-400 mt-1">{errors.aadharNumber}</p>
           )}
         </div>
       </div>
@@ -214,14 +211,10 @@ export default function CommercialForm() {
         <input
           className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
           value={form.companyAddress}
-          onChange={(e) =>
-            update("companyAddress", e.target.value)
-          }
+          onChange={(e) => update("companyAddress", e.target.value)}
         />
         {errors.companyAddress && (
-          <p className="text-xs text-rose-400 mt-1">
-            {errors.companyAddress}
-          </p>
+          <p className="text-xs text-rose-400 mt-1">{errors.companyAddress}</p>
         )}
       </div>
 
