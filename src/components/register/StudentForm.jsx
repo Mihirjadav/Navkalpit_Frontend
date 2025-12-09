@@ -71,7 +71,7 @@ export default function StudentForm() {
     setLoading(true);
     try{
       const responce = await fetch(
-        "https://navkalpit-backend.onrender.com/api/register/student/",
+        `${process.env.REACT_APP_API_URL}register/student/`,
         {
           method: "POST",
           headers: {
