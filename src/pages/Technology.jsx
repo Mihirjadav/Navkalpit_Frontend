@@ -437,7 +437,7 @@ export default function Technology() {
   // Fetch technologies on mount
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/technology-list/")
+      .get("https://navkalpit-backend.onrender.com/api/technology-list/")
       .then((res) => {
         setTechs(Array.isArray(res.data) ? res.data : res.data.results || []);
       })
