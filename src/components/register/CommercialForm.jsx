@@ -55,7 +55,7 @@ export default function CommercialForm() {
     
     setLoading(true);
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/register/commercial/", {
+    const response = await fetch("https://navkalpit-backend.onrender.com/api/register/commercial/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
