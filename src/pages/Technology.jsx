@@ -448,7 +448,7 @@ export default function Technology() {
   useEffect(() => {
     if (!tech) return;
     axios
-      .get(`http://127.0.0.1:8000/api/material-list/?technology=${tech}`)
+      .get(`https://navkalpit-backend.onrender.com/api/material-list/?technology=${tech}`)
       .then((res) => setMaterials(res.data))
       .catch((err) => console.error("Error fetching materials:", err));
   }, [tech]);

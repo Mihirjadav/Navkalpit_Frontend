@@ -69,7 +69,7 @@ export default function StartupForm() {
 
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/register/startup/`, {
+      const response = await fetch("https://navkalpit-backend.onrender.com/api/register/startup/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
