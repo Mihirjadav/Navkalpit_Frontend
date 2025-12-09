@@ -71,7 +71,7 @@ export default function StudentForm() {
     setLoading(true);
     try{
       const responce = await fetch(
-        `${process.env.REACT_APP_API_URL}register/student/`,
+        `${process.env.REACT_APP_API_URL}/register/student/`,
         {
           method: "POST",
           headers: {
