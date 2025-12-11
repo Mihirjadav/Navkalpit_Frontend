@@ -20,7 +20,7 @@ export default function Navbar() {
         {/* HAMBURGER MENU BUTTON - Mobile Only */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="sm:hidden flex flex-col gap-1.5 ml-auto mr-3"
+          className="sm:hidden flex flex-col justify-center gap-1.5 ml-auto mr-3"
           aria-label="Toggle menu"
         >
           <div
