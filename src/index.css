@@ -3,3 +3,48 @@
 * {
   font-family: "Poppins", sans-serif;
 }
+
+/* Global responsive improvements */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Smooth transitions for all responsive changes */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 640px) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Responsive image handling */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Smooth scroll for modals */
+.overflow-y-auto {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shift */
+html {
+  scrollbar-gutter: stable;
+}

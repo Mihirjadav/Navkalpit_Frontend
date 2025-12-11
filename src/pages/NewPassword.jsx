@@ -25,63 +25,75 @@ export default function ChangePassword() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-6">
-      <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-8 max-w-md w-full shadow-xl">
-        <h2 className="text-2xl font-bold text-white text-center mb-6">
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-3 sm:px-6 py-8 sm:py-12">
+      <div className="bg-slate-800/40 border border-slate-700 rounded-lg sm:rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-xl">
+        <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-4 sm:mb-6">
           Change Password
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           <div>
-            <label className="text-sm text-slate-300">New Password</label>
+            <label className="text-xs sm:text-sm text-slate-300">
+              New Password
+            </label>
             <div className="relative mt-1">
-              <Lock className="absolute left-3 top-3 text-slate-400" size={18} />
+              <Lock
+                className="absolute left-3 top-2.5 sm:top-3 text-slate-400"
+                size={16}
+              />
               <input
                 type={show ? "text" : "password"}
                 value={newPass}
                 onChange={(e) => setNewPass(e.target.value)}
-                className="w-full pl-10 pr-12 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 focus:border-blue-500 outline-none"
+                className="w-full pl-10 pr-10 py-2 sm:py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 focus:border-blue-500 outline-none text-sm sm:text-base"
                 placeholder="Enter new password"
               />
               <button
                 type="button"
                 onClick={() => setShow(!show)}
-                className="absolute right-3 top-3 text-slate-400"
+                className="absolute right-3 top-2.5 sm:top-3 text-slate-400 hover:text-slate-300"
               >
-                {show ? <EyeOff size={18} /> : <Eye size={18} />}
+                {show ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
 
           {/* Confirm Password */}
           <div>
-            <label className="text-sm text-slate-300">Confirm New Password</label>
+            <label className="text-xs sm:text-sm text-slate-300">
+              Confirm New Password
+            </label>
             <div className="relative mt-1">
-              <Lock className="absolute left-3 top-3 text-slate-400" size={18} />
+              <Lock
+                className="absolute left-3 top-2.5 sm:top-3 text-slate-400"
+                size={16}
+              />
               <input
                 type={show ? "text" : "password"}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
-                className="w-full pl-10 pr-12 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 focus:border-blue-500 outline-none"
+                className="w-full pl-10 pr-10 py-2 sm:py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 focus:border-blue-500 outline-none text-sm sm:text-base"
                 placeholder="Re-enter new password"
               />
               <button
                 type="button"
                 onClick={() => setShow(!show)}
-                className="absolute right-3 top-3 text-slate-400"
+                className="absolute right-3 top-2.5 sm:top-3 text-slate-400 hover:text-slate-300"
               >
-                {show ? <EyeOff size={18} /> : <Eye size={18} />}
+                {show ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
 
           {error && (
-            <p className="text-red-400 text-sm text-center -mt-2">{error}</p>
+            <p className="text-red-400 text-xs sm:text-sm text-center -mt-2">
+              {error}
+            </p>
           )}
 
           <button
             type="submit"
-            className="w-full py-2 rounded-lg bg-white text-black font-semibold mt-4"
+            className="w-full py-2 sm:py-2.5 rounded-lg bg-white text-black font-semibold mt-4 text-sm sm:text-base hover:bg-slate-100 transition"
           >
             Update Password
           </button>

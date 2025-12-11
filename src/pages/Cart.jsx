@@ -77,8 +77,6 @@ export default function Cart() {
           backgroundSize: "cover",
           backgroundPosition: `calc(50% - ${parallaxOffset}px) center`,
           backgroundAttachment: "fixed",
-        //   opacity: 0.1,
-        //   backgroundRepeat: "no-repeat",
         }}
       />
 
@@ -86,25 +84,25 @@ export default function Cart() {
       <div className="absolute inset-0 z-0 bg-linear-to-r from-slate-900 via-slate-900/80 to-slate-900/20" />
 
       {/* Content */}
-      <div className="relative z-10 px-6 py-16 md:py-24">
+      <div className="relative z-10 px-3 sm:px-6 py-12 sm:py-16 md:py-24">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-20 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start mb-12 sm:mb-20 relative">
             {/* Left side - FAQ text, tabs and items */}
             <div>
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-8 mb-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
                 <div>
-                  <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-2 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-1 sm:mb-2 leading-tight">
                     FAQ
                   </h1>
-                  <p className="text-base md:text-lg text-slate-300">
+                  <p className="text-xs sm:text-base md:text-lg text-slate-300">
                     Frequently asked questions
                   </p>
                 </div>
               </div>
 
               {/* Tab navigation */}
-              <div className="flex gap-6 mb-8 border-b border-slate-700">
+              <div className="flex gap-3 sm:gap-6 mb-6 sm:mb-8 border-b border-slate-700 overflow-x-auto">
                 {Object.keys(faqData).map((tab) => (
                   <button
                     key={tab}
@@ -113,7 +111,7 @@ export default function Cart() {
                       setOpenItems({});
                       setQuery("");
                     }}
-                    className={`pb-3 text-sm md:text-base font-medium transition-colors relative ${
+                    className={`pb-2 sm:pb-3 text-xs sm:text-sm md:text-base font-medium transition-colors relative whitespace-nowrap ${
                       activeTab === tab
                         ? "text-white"
                         : "text-slate-400 hover:text-slate-300"
@@ -128,7 +126,7 @@ export default function Cart() {
               </div>
 
               {/* FAQ Items */}
-              <div className="space-y-4 max-w-3xl">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl">
                 {faqData[activeTab]
                   .filter((item) => {
                     if (!query) return true;
@@ -141,19 +139,19 @@ export default function Cart() {
                   .map((item) => (
                     <div
                       key={item.id}
-                      className="border border-slate-700 rounded-md overflow-hidden bg-transparent hover:bg-slate-800/30 transition-colors"
+                      className="border border-slate-700 rounded-sm sm:rounded-md overflow-hidden bg-transparent hover:bg-slate-800/30 transition-colors"
                     >
                       <button
                         onClick={() => toggleItem(item.id)}
-                        className="w-full px-6 py-6 flex items-center justify-between text-left hover:bg-slate-700/10 transition-colors"
+                        className="w-full px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-between text-left hover:bg-slate-700/10 transition-colors"
                         aria-expanded={!!openItems[item.id]}
                         aria-controls={`${item.id}-panel`}
                       >
-                        <h3 className="text-base md:text-lg font-semibold text-white pr-4">
+                        <h3 className="text-xs sm:text-base md:text-lg font-semibold text-white pr-3 sm:pr-4">
                           {item.question}
                         </h3>
                         <svg
-                          className={`w-5 h-5 text-slate-400 shrink-0 transition-transform ${
+                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-400 shrink-0 transition-transform ${
                             openItems[item.id] ? "rotate-180" : ""
                           }`}
                           fill="none"
@@ -171,9 +169,9 @@ export default function Cart() {
 
                       <div
                         id={`${item.id}-panel`}
-                        className={`px-6 text-slate-300 text-sm md:text-base leading-relaxed border-t border-slate-700 overflow-hidden transition-[max-height,padding] duration-300 ease-in-out ${
+                        className={`px-3 sm:px-6 text-slate-300 text-xs sm:text-base md:text-base leading-relaxed border-t border-slate-700 overflow-hidden transition-[max-height,padding] duration-300 ease-in-out ${
                           openItems[item.id]
-                            ? "max-h-96 pb-5 pt-4"
+                            ? "max-h-96 pb-4 sm:pb-5 pt-3 sm:pt-4"
                             : "max-h-0 pb-0 pt-0"
                         }`}
                         aria-hidden={!openItems[item.id]}
@@ -192,7 +190,9 @@ export default function Cart() {
                     item.answer.toLowerCase().includes(q)
                   );
                 }).length === 0 && (
-                  <div className="text-slate-400 py-8">No results found.</div>
+                  <div className="text-slate-400 py-6 sm:py-8 text-xs sm:text-base">
+                    No results found.
+                  </div>
                 )}
               </div>
             </div>

@@ -414,7 +414,6 @@
 //   );
 // }
 
-
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
@@ -432,7 +431,14 @@ export default function Technology() {
   const fileRef = useRef(null);
   const tier = "standard"; // Example tier
 
-  const colors = ["#111827", "#0ea5e9", "#ef4444", "#f59e0b", "#10b981", "#8b5cf6"];
+  const colors = [
+    "#111827",
+    "#0ea5e9",
+    "#ef4444",
+    "#f59e0b",
+    "#10b981",
+    "#8b5cf6",
+  ];
 
   // Fetch technologies on mount
   useEffect(() => {
@@ -448,7 +454,9 @@ export default function Technology() {
   useEffect(() => {
     if (!tech) return;
     axios
-      .get(`https://navkalpit-backend.onrender.com/api/material-list/?technology=${tech}`)
+      .get(
+        `https://navkalpit-backend.onrender.com/api/material-list/?technology=${tech}`
+      )
       .then((res) => setMaterials(res.data))
       .catch((err) => console.error("Error fetching materials:", err));
   }, [tech]);
@@ -500,17 +508,24 @@ export default function Technology() {
         formData.append("tier", tier);
         formData.append("gst_percent", 18);
 
-        const res = await axios.post("http://127.0.0.1:8000/api/stl-upload/", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/stl-upload/",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
         result = res.data;
       } else {
-        const res = await axios.post("http://127.0.0.1:8000/api/calculate-price/", {
-          material_id: material.id,
-          tier: tier,
-          weight_grams: estimatedWeight,
-          gst_percent: 18,
-        });
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/calculate-price/",
+          {
+            material_id: material.id,
+            tier: tier,
+            weight_grams: estimatedWeight,
+            gst_percent: 18,
+          }
+        );
         result = res.data;
       }
       setQuotation(result);
@@ -526,27 +541,31 @@ export default function Technology() {
   const currentPricePerGram = material?.price_per_gram;
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-900 to-black text-slate-100 py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        <header className="text-center mb-10">
-          <h1 className="text-4xl font-bold">Choose Technology & Upload</h1>
-          <p className="text-slate-400 mt-2">
+    <div className="min-h-screen bg-linear-to-b from-slate-900 to-black text-slate-100 py-12 sm:py-16 md:py-20">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6">
+        <header className="text-center mb-8 sm:mb-12 md:mb-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+            Choose Technology & Upload
+          </h1>
+          <p className="text-xs sm:text-sm md:text-base text-slate-400 mt-2">
             Select technology, material, color, upload STL and verify design.
           </p>
         </header>
 
         {/* Tech Selector */}
-        <section className="bg-slate-800/40 border border-slate-700 rounded-2xl p-6 mb-8">
-          <h2 className="text-lg font-semibold mb-4">1. Select Technology</h2>
-          <div className="flex gap-4 flex-wrap">
+        <section className="bg-slate-800/40 border border-slate-700 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+          <h2 className="text-base sm:text-lg font-semibold mb-4">
+            1. Select Technology
+          </h2>
+          <div className="flex gap-3 flex-wrap">
             {techs.map((t) => (
               <button
                 key={t.id}
                 onClick={() => onSelectTech(t.slug)}
-                className={`px-5 py-3 rounded-xl font-semibold transition ${
+                className={`px-3 sm:px-5 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-base transition ${
                   tech === t.slug
                     ? "bg-white text-slate-900 border-transparent"
-                    : "bg-slate-700/60 text-slate-200 border-slate-600"
+                    : "bg-slate-700/60 text-slate-200 border-slate-600 hover:bg-slate-700"
                 }`}
               >
                 {t.name}
@@ -557,21 +576,25 @@ export default function Technology() {
 
         {/* Material Selector */}
         {tech && (
-          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">2. Choose Material</h2>
-            <div className="flex flex-wrap gap-3">
+          <section className="bg-slate-800/30 border border-slate-700 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold mb-4">
+              2. Choose Material
+            </h2>
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {materials.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => setMaterial(m)}
-                  className={`px-4 py-2 rounded-lg border font-medium flex items-center gap-3 ${
+                  className={`px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg border font-medium flex items-center gap-2 text-xs sm:text-base ${
                     material?.id === m.id
                       ? "bg-white text-slate-900 border-transparent"
-                      : "bg-slate-700/60 text-slate-200 border-slate-600"
+                      : "bg-slate-700/60 text-slate-200 border-slate-600 hover:bg-slate-700"
                   }`}
                 >
                   <span>{m.name}</span>
-                  <span className="text-xs text-slate-400">₹{m.price_per_gram}/g</span>
+                  <span className="text-xs text-slate-400">
+                    ₹{m.price_per_gram}/g
+                  </span>
                 </button>
               ))}
             </div>
@@ -580,35 +603,44 @@ export default function Technology() {
 
         {/* Color Picker */}
         {tech && (
-          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">3. Pick a Color</h2>
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <div className="flex gap-3 items-center">
+          <section className="bg-slate-800/30 border border-slate-700 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold mb-4">
+              3. Pick a Color
+            </h2>
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <div className="flex gap-2 sm:gap-3 items-center flex-wrap">
                 {colors.map((c) => (
                   <button
                     key={c}
                     onClick={() => setColor(c)}
                     aria-label={`color-${c}`}
-                    className={`w-10 h-10 rounded-full border-2 ${
-                      color === c ? "border-white" : "border-slate-700"
+                    className={`w-8 sm:w-10 h-8 sm:h-10 rounded-full border-2 transition ${
+                      color === c
+                        ? "border-white scale-110"
+                        : "border-slate-700"
                     }`}
                     style={{ background: c }}
                   />
                 ))}
               </div>
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-slate-400">Or choose any color:</label>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                <label className="text-xs sm:text-sm text-slate-400">
+                  Or choose any color:
+                </label>
                 <input
                   type="color"
                   value={color || "#0ea5e9"}
                   onChange={(e) => setColor(e.target.value)}
-                  className="w-10 h-10 p-0 border-0 rounded-full"
+                  className="w-8 sm:w-10 h-8 sm:h-10 p-0 border-0 rounded-full cursor-pointer"
                   aria-label="custom-color"
                 />
-                <div className="ml-3 text-sm text-slate-300">
+                <div className="text-xs sm:text-sm text-slate-300">
                   {color ? (
                     <span className="inline-flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-full" style={{ background: color }} />
+                      <span
+                        className="w-3 h-3 rounded-full"
+                        style={{ background: color }}
+                      />
                       {color}
                     </span>
                   ) : (
@@ -622,13 +654,15 @@ export default function Technology() {
 
         {/* File Upload */}
         {tech && (
-          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">4. Upload STL File</h2>
-            <div className="flex flex-col md:flex-row gap-4 md:items-center">
+          <section className="bg-slate-800/30 border border-slate-700 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold mb-4">
+              4. Upload STL File
+            </h2>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
               <div>
                 <button
                   onClick={() => fileRef.current?.click()}
-                  className="px-4 py-2 bg-white text-black rounded-md font-medium shadow hover:shadow-lg"
+                  className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white text-black rounded-md font-medium shadow hover:shadow-lg transition"
                 >
                   Choose STL File
                 </button>
@@ -640,7 +674,9 @@ export default function Technology() {
                   className="hidden"
                 />
               </div>
-              <div className="text-sm text-slate-300">{file ? file.name : "No file uploaded"}</div>
+              <div className="text-xs sm:text-sm text-slate-300 break-all">
+                {file ? file.name : "No file uploaded"}
+              </div>
               {file && (
                 <button
                   onClick={() => {
@@ -648,7 +684,7 @@ export default function Technology() {
                     if (fileRef.current) fileRef.current.value = "";
                     setVerified(false);
                   }}
-                  className="ml-auto md:ml-0 px-3 py-2 bg-slate-700 rounded-md text-sm"
+                  className="sm:ml-auto px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-700 rounded-md text-xs sm:text-sm hover:bg-slate-600 transition"
                 >
                   Remove
                 </button>
@@ -656,34 +692,51 @@ export default function Technology() {
             </div>
 
             {/* Preview area */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-2 bg-slate-900/50 rounded-lg border border-slate-700 p-4 h-48 flex items-center justify-center">
+            <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+              <div className="md:col-span-2 bg-slate-900/50 rounded-lg border border-slate-700 p-3 sm:p-4 h-40 sm:h-48 flex items-center justify-center">
                 {file ? (
                   <div className="text-center">
-                    <div className="text-sm text-slate-300 mb-2">Preview (basic)</div>
-                    <div className="text-xs text-slate-400">Filename: {file.name}</div>
+                    <div className="text-xs sm:text-sm text-slate-300 mb-2">
+                      Preview (basic)
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      Filename: {file.name}
+                    </div>
                     <div className="mt-4 text-xs text-slate-400">
-                      3D preview integration (model-viewer / three.js) can be added later.
+                      3D preview integration (model-viewer / three.js) can be
+                      added later.
                     </div>
                   </div>
                 ) : (
-                  <div className="text-slate-500">Choose an STL to see a preview</div>
+                  <div className="text-slate-500 text-xs sm:text-sm">
+                    Choose an STL to see a preview
+                  </div>
                 )}
               </div>
 
-              <div className="bg-slate-900/40 rounded-lg border border-slate-700 p-4 h-48 flex flex-col justify-between">
-                <div>
-                  <h4 className="text-sm font-semibold">Selected</h4>
-                  <p className="text-xs text-slate-400 mt-2">Technology: {techs.find((t) => t.id === tech)?.name || "—"}</p>
-                  <p className="text-xs text-slate-400">Material: {material?.name || "—"}</p>
+              <div className="bg-slate-900/40 rounded-lg border border-slate-700 p-3 sm:p-4 h-40 sm:h-48 flex flex-col justify-between">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <h4 className="text-xs sm:text-sm font-semibold text-white">
+                    Selected
+                  </h4>
                   <p className="text-xs text-slate-400">
-                    Price/g: {currentPricePerGram ? `₹${currentPricePerGram}/g` : "—"}
+                    Technology: {techs.find((t) => t.id === tech)?.name || "—"}
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    Material: {material?.name || "—"}
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    Price/g:{" "}
+                    {currentPricePerGram ? `₹${currentPricePerGram}/g` : "—"}
                   </p>
                   <p className="text-xs text-slate-400">
                     Color:{" "}
                     {color ? (
                       <>
-                        <span className="inline-block w-3 h-3 rounded-full align-middle mr-2" style={{ background: color }} />
+                        <span
+                          className="inline-block w-2.5 h-2.5 rounded-full align-middle mr-1.5"
+                          style={{ background: color }}
+                        />
                         {color}
                       </>
                     ) : (
@@ -695,9 +748,9 @@ export default function Technology() {
                   <button
                     onClick={handleVerify}
                     disabled={!canVerify()}
-                    className={`w-full py-2 rounded-md text-sm font-semibold ${
+                    className={`w-full py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-semibold transition ${
                       canVerify()
-                        ? "bg-white text-black rounded-md font-medium"
+                        ? "bg-white text-black hover:bg-slate-100"
                         : "bg-slate-700 text-slate-400 cursor-not-allowed"
                     }`}
                   >
@@ -714,9 +767,9 @@ export default function Technology() {
           <button
             disabled={!verified}
             onClick={handleQuotation}
-            className={`px-8 py-3 rounded-full font-semibold ${
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-base transition ${
               verified
-                ? "bg-white text-black rounded-md font-medium shadow-lg"
+                ? "bg-white text-black shadow-lg hover:shadow-xl hover:scale-105"
                 : "bg-slate-700 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -726,29 +779,38 @@ export default function Technology() {
 
         {/* Quotation modal */}
         {showQuotation && quotation && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-            <div className="bg-slate-900 text-slate-100 rounded-2xl max-w-2xl w-full p-6 border border-slate-700">
-              <h3 className="text-xl font-bold mb-3">Quotation Summary</h3>
-              <div className="text-sm text-slate-300 space-y-2 mb-4">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-3 sm:p-4">
+            <div className="bg-slate-900 text-slate-100 rounded-lg sm:rounded-2xl max-w-2xl w-full p-4 sm:p-6 border border-slate-700 max-h-[90vh] overflow-y-auto">
+              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                Quotation Summary
+              </h3>
+              <div className="text-xs sm:text-sm text-slate-300 space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
                 <div>Technology: {techs.find((t) => t.id === tech)?.name}</div>
                 <div>Material: {material?.name || "—"}</div>
-                <div>Price per gram: {currentPricePerGram ? `₹${currentPricePerGram}/g` : "—"}</div>
+                <div>
+                  Price per gram:{" "}
+                  {currentPricePerGram ? `₹${currentPricePerGram}/g` : "—"}
+                </div>
                 <div>Color: {color || "—"}</div>
-                <div>File: {file ? file.name : "—"}</div>
+                <div className="break-all">File: {file ? file.name : "—"}</div>
               </div>
 
-              <div className="mb-4">
-                <label className="text-sm text-slate-400">Estimated Weight (grams)</label>
+              <div className="mb-3 sm:mb-4">
+                <label className="text-xs sm:text-sm text-slate-400">
+                  Estimated Weight (grams)
+                </label>
                 <input
                   type="number"
                   min={0}
                   value={estimatedWeight}
-                  onChange={(e) => setEstimatedWeight(Number(e.target.value) || 0)}
-                  className="mt-2 w-full p-2 rounded-md bg-slate-800 border border-slate-700 text-slate-100"
+                  onChange={(e) =>
+                    setEstimatedWeight(Number(e.target.value) || 0)
+                  }
+                  className="mt-2 w-full p-2 rounded-md bg-slate-800 border border-slate-700 text-slate-100 text-xs sm:text-sm"
                 />
               </div>
 
-              <div className="text-right text-lg font-semibold">
+              <div className="text-right text-base sm:text-lg font-semibold mb-4 sm:mb-6">
                 Total Price:{" "}
                 {currentPricePerGram
                   ? `₹${(estimatedWeight * currentPricePerGram).toFixed(2)}`
@@ -756,10 +818,10 @@ export default function Technology() {
                 + 18% GST
               </div>
 
-              <div className="mt-6 flex gap-3 justify-end">
+              <div className="flex gap-2 sm:gap-3 justify-end flex-col-reverse sm:flex-row">
                 <button
                   onClick={() => setShowQuotation(false)}
-                  className="px-4 py-2 rounded-md bg-slate-700 text-slate-200"
+                  className="px-3 sm:px-4 py-2 rounded-md bg-slate-700 text-slate-200 text-xs sm:text-base hover:bg-slate-600 transition"
                 >
                   Close
                 </button>
@@ -768,7 +830,7 @@ export default function Technology() {
                     alert("Quotation saved/confirmed (placeholder)");
                     setShowQuotation(false);
                   }}
-                  className="px-4 py-2 rounded-md bg-white text-black font-medium"
+                  className="px-3 sm:px-4 py-2 rounded-md bg-white text-black font-medium text-xs sm:text-base hover:bg-slate-100 transition"
                 >
                   Confirm
                 </button>
