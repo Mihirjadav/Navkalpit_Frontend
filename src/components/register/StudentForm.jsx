@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 export default function StudentForm() {
   const [form, setForm] = useState({
-    username: "",
     fullName: "",
     email: "",
     password: "",
@@ -23,79 +22,201 @@ export default function StudentForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const update = (key, value) => setForm((f) => ({ ...f, [key]: value }));
+
+  // allow only digits, optional max length
+  const allowOnlyNumbers = (key, value, maxLen) => {
+    const cleaned = (value || "").replace(/\D/g, "");
+    update(key, typeof maxLen === "number" ? cleaned.slice(0, maxLen) : cleaned);
+  };
+
+  // allow only letters, spaces and common punctuation (no digits)
+  const allowOnlyChars = (key, value) => {
+    const cleaned = (value || "").replace(/[0-9]/g, "");
+    const filtered = cleaned.replace(/[^A-Za-z\u00C0-\u017F\s\-\.'&,()]/g, "");
+    update(key, filtered);
+  };
+
+  // allow letters, digits, - and / and space
+  const allowAlphaNumeric = (key, value, maxLen) => {
+    const cleaned = (value || "").replace(/[^A-Za-z0-9\-\s\/_.]/g, "");
+    update(key, typeof maxLen === "number" ? cleaned.slice(0, maxLen) : cleaned);
+  };
 
   function validate() {
     const e = {};
 
-    if (!form.username.trim()) e.username = "Username is required";
-    if (!/^[a-zA-Z0-9_.-]{3,20}$/.test(form.username))
-      e.username =
-        "Username must be 3–20 characters (letters, numbers, _. - allowed)";
-
+    // full name: required, at least 2 chars, no digits
     if (!form.fullName.trim()) e.fullName = "Full Name is required";
-    if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(form.email))
+    else if (form.fullName.trim().length < 2)
+      e.fullName = "Full Name must be at least 2 characters";
+    else if (/[0-9]/.test(form.fullName))
+      e.fullName = "Full Name should not contain numbers";
+
+    // email
+    if (!form.email.trim())
+      e.email = "Email is required";
+    else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(form.email))
       e.email = "Valid Email Address is required";
 
+    // password rules: required, min 8, at least 1 letter and 1 digit
     if (!form.password) e.password = "Password is required";
+    else if (form.password.length < 8)
+      e.password = "Password must be at least 8 characters";
+    else if (!/[A-Za-z]/.test(form.password) || !/[0-9]/.test(form.password))
+      e.password = "Password must contain letters and numbers";
+
     if (form.password !== form.confirmPassword)
       e.confirmPassword = "Passwords do not match";
 
-    if (!form.country) e.country = "Country is required";
-    if (!form.state) e.state = "State is required";
-    if (!form.city) e.city = "City is required";
+    // location required and characters only
+    if (!form.country.trim()) e.country = "Country is required";
+    else if (/[0-9]/.test(form.country)) e.country = "Country should not include numbers";
 
-    if (!form.universityName) e.universityName = "University Name is required";
-    if (!form.department) e.department = "Department is required";
-    if (!form.course) e.course = "Course is required";
-    if (!form.semester) e.semester = "Semester is required";
-    if (!form.endOfSemester) e.endOfSemester = "End of Semester is required";
+    if (!form.state.trim()) e.state = "State is required";
+    else if (/[0-9]/.test(form.state)) e.state = "State should not include numbers";
 
+    if (!form.city.trim()) e.city = "City is required";
+    else if (/[0-9]/.test(form.city)) e.city = "City should not include numbers";
+
+    // university / dept / course
+    if (!form.universityName.trim()) e.universityName = "University Name is required";
+    if (!form.department.trim()) e.department = "Department is required";
+    if (!form.course.trim()) e.course = "Course is required";
+
+    // semester: numeric, integer between 1 and 12 (adjust if you allow more)
+    if (!form.semester.toString().trim()) e.semester = "Semester is required";
+    else {
+      const sem = Number(form.semester);
+      if (!Number.isInteger(sem) || sem < 1 || sem > 12)
+        e.semester = "Semester must be an integer between 1 and 12";
+    }
+
+    // endOfSemester: accept formats like "Dec 2026", "December 2026", "12/2026", "2026-12"
+    if (!form.endOfSemester.trim()) e.endOfSemester = "End of Semester is required";
+    else {
+      const v = form.endOfSemester.trim();
+      const patterns = [
+        /^[A-Za-z]{3,9}\s\d{4}$/, // "Dec 2026" or "December 2026"
+        /^(0?[1-9]|1[0-2])\/\d{4}$/, // "12/2026"
+        /^\d{4}-?(0[1-9]|1[0-2])$/, // "2026-12" or "202612"
+      ];
+      if (!patterns.some((p) => p.test(v)))
+        e.endOfSemester = 'End of Semester must be like "Dec 2026" or "12/2026" or "2026-12"';
+    }
+
+    // aadhar 12 digits
     if (!/^[0-9]{12}$/.test(form.aadharNumber || ""))
-      e.aadharNumber = "Aadhar Number must be 12 digits";
+      e.aadharNumber = "Aadhar Number must be exactly 12 digits";
 
-    if (!form.address) e.address = "Address is required";
+    // address
+    if (!form.address.trim()) e.address = "Address is required";
+    else if (form.address.trim().length < 5)
+      e.address = "Address is too short";
 
+    // mobile 7-15 digits
     if (!/^[0-9]{7,15}$/.test(form.mobileNumber || ""))
       e.mobileNumber = "Mobile Number must be 7–15 digits";
 
-    if (!form.enrollmentNo) e.enrollmentNo = "Enrollment No is required";
+    // enrollment no (alphanumeric, min length)
+    if (!form.enrollmentNo.trim()) e.enrollmentNo = "Enrollment No is required";
+    else if (!/^[A-Za-z0-9\-\/_.]{3,}$/.test(form.enrollmentNo))
+      e.enrollmentNo = "Enrollment No should be alphanumeric (min 3 chars)";
 
-    if (!form.collegeIdCard) e.collegeIdCard = "College ID Card is required";
+    // college id card
+    if (!form.collegeIdCard.trim()) e.collegeIdCard = "College ID Card is required";
 
     setErrors(e);
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!validate()) return;
-    console.log("Student registration:", form);
-    alert("Student registration submitted (demo). Check console.");
+
+    setLoading(true);
+    try {
+      const responce = await fetch(
+        "http://127.0.0.1:8000/api/register/student/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            full_name: form.fullName,
+            email: form.email,
+            password: form.password,
+            confirm_password: form.confirmPassword,
+            country: form.country,
+            state: form.state,
+            city: form.city,
+            university_name: form.universityName,
+            department: form.department,
+            course: form.course,
+            semester: form.semester,
+            end_of_semester: form.endOfSemester,
+            aadhar_number: form.aadharNumber,
+            address: form.address,
+            mobile_number: form.mobileNumber,
+            enrollment_no: form.enrollmentNo,
+            college_id_card: form.collegeIdCard,
+          }),
+        }
+      );
+      if (!responce.ok) {
+        const errorData = await responce.json();
+        console.error("Server errors:", errorData);
+        alert("Failed to register student. Check console for errors.");
+        return;
+      }
+
+      const data = await responce.json();
+      console.log("Student registration successfull:", data);
+      alert("Student register successful");
+
+      // Reset form
+      setForm({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        country: "",
+        state: "",
+        city: "",
+        universityName: "",
+        department: "",
+        course: "",
+        semester: "",
+        endOfSemester: "",
+        aadharNumber: "",
+        address: "",
+        mobileNumber: "",
+        enrollmentNo: "",
+        collegeIdCard: "",
+      });
+      setErrors({});
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Network error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="text-sm">Username</label>
-        <input
-          className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
-          value={form.username}
-          onChange={(e) => update("username", e.target.value)}
-        />
-        {errors.username && (
-          <p className="text-xs text-rose-400 mt-1">{errors.username}</p>
-        )}
-      </div>
-
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label className="text-sm">Full Name</label>
           <input
+            placeholder="John Doe"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.fullName}
-            onChange={(e) => update("fullName", e.target.value)}
+            onChange={(e) => allowOnlyChars("fullName", e.target.value)}
           />
           {errors.fullName && (
             <p className="text-xs text-rose-400 mt-1">{errors.fullName}</p>
@@ -105,6 +226,7 @@ export default function StudentForm() {
           <label className="text-sm">Email Address</label>
           <input
             type="email"
+            placeholder="you@student.edu"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
@@ -121,6 +243,7 @@ export default function StudentForm() {
           <label className="text-sm">Password</label>
           <input
             type="password"
+            placeholder="Min 8 chars, include letters & numbers"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.password}
             onChange={(e) => update("password", e.target.value)}
@@ -133,6 +256,7 @@ export default function StudentForm() {
           <label className="text-sm">Confirm Password</label>
           <input
             type="password"
+            placeholder="Repeat password"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.confirmPassword}
             onChange={(e) => update("confirmPassword", e.target.value)}
@@ -150,9 +274,11 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">Country</label>
           <input
+            placeholder="India"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.country}
-            onChange={(e) => update("country", e.target.value)}
+            onChange={(e) => allowOnlyChars("country", e.target.value)}
           />
           {errors.country && (
             <p className="text-xs text-rose-400 mt-1">{errors.country}</p>
@@ -161,9 +287,11 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">State</label>
           <input
+            placeholder="Gujarat"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.state}
-            onChange={(e) => update("state", e.target.value)}
+            onChange={(e) => allowOnlyChars("state", e.target.value)}
           />
           {errors.state && (
             <p className="text-xs text-rose-400 mt-1">{errors.state}</p>
@@ -172,9 +300,11 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">City</label>
           <input
+            placeholder="Rajkot"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.city}
-            onChange={(e) => update("city", e.target.value)}
+            onChange={(e) => allowOnlyChars("city", e.target.value)}
           />
           {errors.city && (
             <p className="text-xs text-rose-400 mt-1">{errors.city}</p>
@@ -182,14 +312,15 @@ export default function StudentForm() {
         </div>
       </div>
 
-      {/* University / Department / Course */}
       <div className="grid md:grid-cols-3 gap-4">
         <div>
           <label className="text-sm">University Name</label>
           <input
+            placeholder="Marwadi University"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.universityName}
-            onChange={(e) => update("universityName", e.target.value)}
+            onChange={(e) => allowOnlyChars("universityName", e.target.value)}
           />
           {errors.universityName && (
             <p className="text-xs text-rose-400 mt-1">
@@ -200,9 +331,11 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">Department</label>
           <input
+            placeholder="Computer Science"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.department}
-            onChange={(e) => update("department", e.target.value)}
+            onChange={(e) => allowOnlyChars("department", e.target.value)}
           />
           {errors.department && (
             <p className="text-xs text-rose-400 mt-1">{errors.department}</p>
@@ -211,9 +344,11 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">Course</label>
           <input
+            placeholder="BCA / MCA"
+            inputMode="text"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.course}
-            onChange={(e) => update("course", e.target.value)}
+            onChange={(e) => allowOnlyChars("course", e.target.value)}
           />
           {errors.course && (
             <p className="text-xs text-rose-400 mt-1">{errors.course}</p>
@@ -226,9 +361,14 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">Semester</label>
           <input
+            placeholder="1 - 12"
+            inputMode="numeric"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.semester}
-            onChange={(e) => update("semester", e.target.value)}
+            onChange={(e) =>
+              // allow only digits, no decimals
+              allowOnlyNumbers("semester", e.target.value, 2)
+            }
           />
           {errors.semester && (
             <p className="text-xs text-rose-400 mt-1">{errors.semester}</p>
@@ -237,7 +377,7 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">End of Semester</label>
           <input
-            placeholder="e.g. Dec 2026"
+            placeholder='2026'
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.endOfSemester}
             onChange={(e) => update("endOfSemester", e.target.value)}
@@ -255,11 +395,10 @@ export default function StudentForm() {
           <input
             maxLength={12}
             inputMode="numeric"
+            placeholder="12 digits"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.aadharNumber}
-            onChange={(e) =>
-              update("aadharNumber", e.target.value.replace(/\D/g, ""))
-            }
+            onChange={(e) => allowOnlyNumbers("aadharNumber", e.target.value, 12)}
           />
           {errors.aadharNumber && (
             <p className="text-xs text-rose-400 mt-1">{errors.aadharNumber}</p>
@@ -268,6 +407,7 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">Address (Aadhar Card Based)</label>
           <input
+            placeholder="Address as in Aadhar card"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.address}
             onChange={(e) => update("address", e.target.value)}
@@ -278,17 +418,16 @@ export default function StudentForm() {
         </div>
       </div>
 
-      {/* Mobile / Enrollment / College ID */}
       <div className="grid md:grid-cols-3 gap-4">
         <div>
           <label className="text-sm">Mobile Number</label>
           <input
             inputMode="numeric"
+            placeholder="Mobile Number"
+            maxLength={15}
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.mobileNumber}
-            onChange={(e) =>
-              update("mobileNumber", e.target.value.replace(/\D/g, ""))
-            }
+            onChange={(e) => allowOnlyNumbers("mobileNumber", e.target.value, 15)}
           />
           {errors.mobileNumber && (
             <p className="text-xs text-rose-400 mt-1">{errors.mobileNumber}</p>
@@ -297,9 +436,10 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">Enrollment No</label>
           <input
+            placeholder="Alphanumeric enrollment no"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.enrollmentNo}
-            onChange={(e) => update("enrollmentNo", e.target.value)}
+            onChange={(e) => allowAlphaNumeric("enrollmentNo", e.target.value, 30)}
           />
           {errors.enrollmentNo && (
             <p className="text-xs text-rose-400 mt-1">{errors.enrollmentNo}</p>
@@ -308,9 +448,10 @@ export default function StudentForm() {
         <div>
           <label className="text-sm">College idCard</label>
           <input
+            placeholder="College ID printed on your card"
             className="w-full mt-1 p-2 rounded-md bg-slate-900 border border-slate-700"
             value={form.collegeIdCard}
-            onChange={(e) => update("collegeIdCard", e.target.value)}
+            onChange={(e) => allowAlphaNumeric("collegeIdCard", e.target.value, 30)}
           />
           {errors.collegeIdCard && (
             <p className="text-xs text-rose-400 mt-1">{errors.collegeIdCard}</p>
@@ -321,8 +462,9 @@ export default function StudentForm() {
       <button
         type="submit"
         className="mt-4 w-full py-3 rounded-xl bg-white text-slate-900 font-semibold"
+        disabled={loading}
       >
-        Register as Student
+        {loading ? "Registering..." : "Register as Student"}
       </button>
     </form>
   );

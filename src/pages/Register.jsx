@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import StudentForm from "../components/register/StudentForm";
-import StartupForm from "../components/register/StartupForm";
+import OtherForm from "../components/register/OtherForm";
 import CommercialForm from "../components/register/CommercialForm";
 
 export default function Register() {
@@ -32,17 +32,6 @@ export default function Register() {
             </button>
             <button
               type="button"
-              onClick={() => setCategory("startup")}
-              className={`px-4 py-2 rounded-lg font-semibold ${
-                category === "startup"
-                  ? "bg-white text-slate-900"
-                  : "bg-slate-700/70 text-slate-200"
-              }`}
-            >
-              Startup
-            </button>
-            <button
-              type="button"
               onClick={() => setCategory("commercial")}
               className={`px-4 py-2 rounded-lg font-semibold ${
                 category === "commercial"
@@ -52,12 +41,24 @@ export default function Register() {
             >
               Commercial
             </button>
+            <button
+              type="button"
+              onClick={() => setCategory("other")}
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                category === "other"
+                  ? "bg-white text-slate-900"
+                  : "bg-slate-700/70 text-slate-200"
+              }`}
+            >
+              Other
+            </button>
+            
           </div>
 
           {/* Forms – separate components */}
           {category === "student" && <StudentForm />}
-          {category === "startup" && <StartupForm />}
           {category === "commercial" && <CommercialForm />}
+          {category === "other" && <OtherForm />}
         </div>
       </div>
       <div className="text-center text-sm text-slate-400 mt-4">

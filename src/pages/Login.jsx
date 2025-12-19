@@ -6,20 +6,60 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(e) {
+  e.preventDefault();
 
-    if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(email)) {
-      return setError("Enter a valid email");
-    }
-    if (!password) {
-      return setError("Enter your password");
-    }
-
-    setError(null);
-    alert("Logged in (demo)");
-    console.log({ email, password });
+  // basic validations
+  if (!email) {
+    return setError("Enter your email");
   }
+  if (!password) {
+    return setError("Enter your password");
+  }
+
+  setError(null);
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/api/login/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.detail || "Invalid email or password");
+      return;
+    }
+
+    // Save tokens
+    localStorage.setItem("access", data.access);
+    localStorage.setItem("refresh", data.refresh);
+
+    // Decode token to get user_type
+    const payload = JSON.parse(atob(data.access.split(".")[1]));
+    const userType = payload.user_type;
+
+    // Redirect based on user type
+    if (userType === "student") {
+      window.location.href = "/student/dashboard";
+    } else if (userType === "startup") {
+      window.location.href = "/startup/dashboard";
+    } else if (userType === "commercial") {
+      window.location.href = "/commercial/dashboard";
+    } else {
+      window.location.href = "/";
+    }
+
+  } catch (err) {
+    setError("Something went wrong. Try again.");
+  }
+}
+
 
   return (
     <div className="min-h-screen bg-gradient-to-black from-slate-900 to-black text-slate-100 py-20">
