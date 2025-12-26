@@ -8,7 +8,6 @@ export default function Navbar() {
   return (
     <header className="mb-6">
       <div className="rounded-[20px] bg-emerald-50/90 px-4 md:px-6 py-3 flex items-center">
-        {/* LOGO */}
         <div className="mr-4 md:mr-6 flex items-center">
           <img
             src="/logo.png"
@@ -17,7 +16,6 @@ export default function Navbar() {
           />
         </div>
 
-        {/* MOBILE: menu button */}
         <button
           onClick={() => setOpen((s) => !s)}
           className="md:hidden mr-3 p-2 rounded-md bg-transparent"
@@ -37,9 +35,11 @@ export default function Navbar() {
           </svg>
         </button>
 
-        {/* CENTER NAV LINKS (hidden on small screens) */}
         <nav className="flex-1 hidden md:flex justify-center">
           <ul className="flex gap-8 text-sm text-slate-800 font-medium">
+            <li>
+              <Link to="/about">About</Link>
+            </li>
             <li>
               <Link to="/service">Service</Link>
             </li>
@@ -47,15 +47,20 @@ export default function Navbar() {
               <Link to="/technology">Technology</Link>
             </li>
             <li>
+              <Link to="/news">News</Link>
+            </li>
+            <li>
               <Link to="/shop">Shop</Link>
             </li>
             <li>
-              <Link to="/support">Customer Care</Link>
+              <Link to="/career">Career</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
             </li>
           </ul>
         </nav>
 
-        {/* RIGHT SECTION — Login + Cart (collapses into mobile menu) */}
         <div className="hidden md:flex items-center gap-4">
           <Link
             to="/login"
@@ -128,6 +133,11 @@ export default function Navbar() {
               <nav>
                 <ul className="flex flex-col gap-4 text-slate-800">
                   <li>
+                    <Link to="/about" onClick={() => setOpen(false)}>
+                      About
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/service" onClick={() => setOpen(false)}>
                       Service
                     </Link>
@@ -138,13 +148,23 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li>
+                    <Link to="/news" onClick={() => setOpen(false)}>
+                      News
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/shop" onClick={() => setOpen(false)}>
                       Shop
                     </Link>
                   </li>
                   <li>
-                    <Link to="/support" onClick={() => setOpen(false)}>
-                      Customer Care
+                    <Link to="/career" onClick={() => setOpen(false)}>
+                      Career
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/contact" onClick={() => setOpen(false)}>
+                      Contact
                     </Link>
                   </li>
                 </ul>

@@ -36,12 +36,9 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-            <button className="mt-8 px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-blue-700 transition-colors">
-              Get a Quote
-            </button>
+         
           </div>
 
-          {/* Be in the Know Section */}
           <div>
             <h3 className="text-white font-bold text-xl mb-8">
               Be in the Know
