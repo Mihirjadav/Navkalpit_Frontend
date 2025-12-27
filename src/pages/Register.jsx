@@ -90,7 +90,7 @@ export default function UnifiedRegisterForm() {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/register/",
+        "https://navkalpit-backend.onrender.com/api/register/",
         {
           method: "POST",
           headers: {

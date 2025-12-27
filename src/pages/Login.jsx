@@ -21,7 +21,7 @@ export default function Login() {
 
     try {
       const res = await fetch(
-        "http://127.0.0.1:8000/api/login/",
+        "https://navkalpit-backend.onrender.com/api/login/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
