@@ -36,7 +36,7 @@ export default function Login() {
       localStorage.setItem("refresh", data.refresh);
 
       // Single redirect (or remove this line if not needed)
-      window.location.href = "/dashboard";
+      window.location.href = "/";
 
     } catch (err) {
       setError("Something went wrong. Try again.");
