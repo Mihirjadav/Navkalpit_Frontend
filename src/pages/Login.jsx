@@ -9,13 +9,8 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // basic validations
-    if (!email) {
-      return setError("Enter your email");
-    }
-    if (!password) {
-      return setError("Enter your password");
-    }
+    if (!email) return setError("Enter your email");
+    if (!password) return setError("Enter your password");
 
     setError(null);
 
@@ -25,10 +20,7 @@ export default function Login() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
+          body: JSON.stringify({ email, password }),
         }
       );
 
@@ -43,20 +35,9 @@ export default function Login() {
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
 
-      // Decode token to get user_type
-      const payload = JSON.parse(atob(data.access.split(".")[1]));
-      const userType = payload.user_type;
+      // Single redirect (or remove this line if not needed)
+      window.location.href = "/dashboard";
 
-      // Redirect based on user type
-      if (userType === "student") {
-        window.location.href = "/student/dashboard";
-      } else if (userType === "startup") {
-        window.location.href = "/startup/dashboard";
-      } else if (userType === "commercial") {
-        window.location.href = "/commercial/dashboard";
-      } else {
-        window.location.href = "/";
-      }
     } catch (err) {
       setError("Something went wrong. Try again.");
     }
