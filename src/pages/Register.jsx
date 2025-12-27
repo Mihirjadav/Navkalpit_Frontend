@@ -90,7 +90,7 @@ export default function UnifiedRegisterForm() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://navkalpit-backend.onrender.com/api/register/",
+        "http://127.0.0.1:8000/api/register/",
         {
           method: "POST",
           headers: {
@@ -131,23 +131,25 @@ export default function UnifiedRegisterForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-black from-slate-900 to-black text-slate-100 py-20">
-      <div className="max-w-md mx-auto">
-        <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-8 shadow-md">
-          <h2 className="text-2xl font-bold mb-2">Register</h2>
-          <p className="text-sm text-slate-400 mb-6">Fill the details</p>
+    <div className="min-h-screen bg-gradient-to-black from-slate-900 to-black text-slate-100 py-12 sm:py-16 md:py-20">
+      <div className="max-w-md mx-auto px-4 sm:px-6">
+        <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-md">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Register</h2>
+          <p className="text-xs sm:text-sm text-slate-400 mb-6">
+            Fill the details
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="block text-xs sm:text-sm font-medium mb-2">
                 Full Name
               </label>
               <input
                 type="text"
                 value={form.fullName}
                 onChange={(e) => allowOnlyChars("fullName", e.target.value)}
-                className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                className="w-full px-3 sm:px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-sm"
                 placeholder="Enter full name"
                 disabled={loading}
               />
@@ -158,12 +160,14 @@ export default function UnifiedRegisterForm() {
 
             {/* Email ID */}
             <div>
-              <label className="block text-sm font-medium mb-2">Email ID</label>
+              <label className="block text-xs sm:text-sm font-medium mb-2">
+                Email ID
+              </label>
               <input
                 type="email"
                 value={form.email}
                 onChange={(e) => update("email", e.target.value)}
-                className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                className="w-full px-3 sm:px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-sm"
                 placeholder="Enter email"
                 disabled={loading}
               />
@@ -174,7 +178,7 @@ export default function UnifiedRegisterForm() {
 
             {/* Mobile Number */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="block text-xs sm:text-sm font-medium mb-2">
                 Mobile Number
               </label>
               <input
@@ -183,7 +187,7 @@ export default function UnifiedRegisterForm() {
                 onChange={(e) =>
                   allowOnlyNumbers("mobileNumber", e.target.value, 10)
                 }
-                className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                className="w-full px-3 sm:px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-sm"
                 placeholder="Enter mobile number"
                 disabled={loading}
                 maxLength="10"
@@ -197,12 +201,14 @@ export default function UnifiedRegisterForm() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="block text-xs sm:text-sm font-medium mb-2">
+                Password
+              </label>
               <input
                 type="password"
                 value={form.password}
                 onChange={(e) => update("password", e.target.value)}
-                className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                className="w-full px-3 sm:px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-sm"
                 placeholder="Enter password"
                 disabled={loading}
               />
@@ -213,14 +219,14 @@ export default function UnifiedRegisterForm() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="block text-xs sm:text-sm font-medium mb-2">
                 Confirm Password
               </label>
               <input
                 type="password"
                 value={form.confirmPassword}
                 onChange={(e) => update("confirmPassword", e.target.value)}
-                className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                className="w-full px-3 sm:px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-sm"
                 placeholder="Confirm password"
                 disabled={loading}
               />
@@ -235,12 +241,11 @@ export default function UnifiedRegisterForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 text-white font-semibold rounded-lg transition-colors"
+              className="w-full mt-6 px-4 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 text-white font-semibold rounded-lg transition-colors text-sm sm:text-base"
             >
               {loading ? "Registering..." : "Register"}
             </button>
           </form>
-          
         </div>
       </div>
     </div>

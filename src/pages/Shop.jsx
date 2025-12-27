@@ -147,8 +147,7 @@ export default function Shop({ onAddToCart } = {}) {
   };
 
   return (
-    <main className="max-w-[1400px] mx-auto p-6 m-20 relative bg-gray-500 rounded-2xl">
-      
+    <main className="w-full max-w-[1400px]  p-3 sm:p-4 md:p-6 relative bg-gray-500 rounded-2xl my-4 sm:my-6 md:my-20 mx-auto">
       <section>
         {filtered.length === 0 ? (
           <div className="py-12 text-center text-slate-600">

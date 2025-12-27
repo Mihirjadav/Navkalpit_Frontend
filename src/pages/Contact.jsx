@@ -36,20 +36,20 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100">
       {/* Hero Section */}
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-red from-slate-900 to-slate-800 border-b border-slate-700">
+      <section className="py-10 sm:py-14 md:py-16 px-4 sm:px-8 bg-gradient-to-red from-slate-900 to-slate-800 border-b border-slate-700">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
             Let's Build Something Amazing Together
           </h1>
-          <p className="text-xl text-slate-300">
+          <p className="text-base sm:text-lg md:text-xl text-slate-300">
             We'd love to hear from you. Get in touch with us today!
           </p>
         </div>
       </section>
 
       {/* Quick Contact Info */}
-      <section className="py-12 px-4 md:px-8 bg-slate-800/30">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="py-10 sm:py-12 px-4 sm:px-8 bg-slate-800/30">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {[
             {
               icon: "📞",
@@ -73,39 +73,42 @@ export default function Contact() {
             <a
               key={index}
               href={item.link || "#"}
-              className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center hover:border-blue-400 transition-colors"
+              className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 sm:p-6 text-center hover:border-blue-400 transition-colors"
             >
-              <div className="text-4xl mb-3">{item.icon}</div>
-              <p className="text-slate-400 text-sm mb-2">{item.label}</p>
-              <p className="text-slate-100 font-semibold">{item.value}</p>
+              <div className="text-3xl sm:text-4xl mb-3">{item.icon}</div>
+              <p className="text-slate-400 text-xs sm:text-sm mb-2">
+                {item.label}
+              </p>
+              <p className="text-slate-100 font-semibold text-sm sm:text-base">
+                {item.value}
+              </p>
             </a>
           ))}
         </div>
       </section>
 
-
       {/* Social Connect Section */}
-      <section className="py-16 px-4 md:px-8 bg-slate-800/30">
+      <section className="py-10 sm:py-14 md:py-16 px-4 sm:px-8 bg-slate-800/30">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 text-center text-blue-400">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-10 text-center text-blue-400">
             Connect With Us
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <a
               href="https://www.instagram.com/navkalpit2610?igsh=MTlveXRwdjRubWR0dQ=="
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center hover:border-pink-400 transition-colors"
+              className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 text-center hover:border-pink-400 transition-colors"
             >
-              <div className="text-5xl mb-4">📸</div>
-              <h3 className="text-2xl font-semibold text-slate-100 mb-2">
+              <div className="text-4xl sm:text-5xl mb-4">📸</div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-slate-100 mb-2">
                 Instagram
               </h3>
-              <p className="text-slate-400 mb-4">
+              <p className="text-slate-400 mb-4 text-xs sm:text-sm">
                 Follow us for latest updates and portfolio
               </p>
-              <button className="px-6 py-2 bg-pink-600 hover:bg-pink-700 text-white font-semibold rounded-lg transition-colors">
+              <button className="px-4 sm:px-6 py-2 bg-pink-600 hover:bg-pink-700 text-white font-semibold rounded-lg transition-colors text-sm sm:text-base">
                 Follow Us
               </button>
             </a>
@@ -114,24 +117,22 @@ export default function Contact() {
               href="https://www.facebook.com/share/19tdFeRrnR/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center hover:border-blue-400 transition-colors"
+              className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 text-center hover:border-blue-400 transition-colors"
             >
-              <div className="text-5xl mb-4">👍</div>
-              <h3 className="text-2xl font-semibold text-slate-100 mb-2">
+              <div className="text-4xl sm:text-5xl mb-4">👍</div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-slate-100 mb-2">
                 Facebook
               </h3>
-              <p className="text-slate-400 mb-4">
+              <p className="text-slate-400 mb-4 text-xs sm:text-sm">
                 Join our community and stay connected
               </p>
-              <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+              <button className="px-4 sm:px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors text-sm sm:text-base">
                 Like Page
               </button>
             </a>
           </div>
         </div>
       </section>
-
-
     </div>
   );
 }

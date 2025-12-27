@@ -128,28 +128,28 @@ function Technology() {
   ];
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-900 via-slate-900 to-black pt-24 pb-20">
+    <div className="min-h-screen bg-linear-to-b from-slate-900 via-slate-900 to-black pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20">
       {/* Background elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-48 sm:w-96 h-48 sm:h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
       </div>
 
       {/* Header Section */}
-      <div className="relative z-10 px-6 md:px-12 mb-20">
+      <div className="relative z-10 px-4 sm:px-6 md:px-12 mb-12 sm:mb-16 md:mb-20">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-block mb-6">
-            <span className="px-4 py-2 bg-blue-500/20 border border-blue-400/40 text-blue-200 rounded-full text-sm font-semibold backdrop-blur-sm">
+          <div className="inline-block mb-4 sm:mb-6">
+            <span className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-500/20 border border-blue-400/40 text-blue-200 rounded-full font-semibold backdrop-blur-sm">
               ✨ Our Technology
             </span>
           </div>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-tight">
             Professional{" "}
             <span className="bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Technology
             </span>
           </h1>
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto">
             Comprehensive solutions for all your 3D printing, design, and
             prototyping needs
           </p>
@@ -157,9 +157,9 @@ function Technology() {
       </div>
 
       {/* Services Grid */}
-      <div className="relative z-10 px-6 md:px-12 mb-20">
+      <div className="relative z-10 px-4 sm:px-6 md:px-12 mb-12 sm:mb-16 md:mb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-10">
             {services.map((service) => (
               <div
                 key={service.id}
@@ -179,20 +179,20 @@ function Technology() {
                 <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
 
                 {/* Card Content */}
-                <div className="relative backdrop-blur-sm bg-slate-900/50 border border-white/10 group-hover:border-white/30 rounded-2xl p-8 transition-all duration-300">
+                <div className="relative backdrop-blur-sm bg-slate-900/50 border border-white/10 group-hover:border-white/30 rounded-2xl p-4 sm:p-6 md:p-8 transition-all duration-300">
                   {/* Icon and Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-4">
+                  <div className="flex items-start justify-between mb-4 sm:mb-6">
+                    <div className="flex items-center gap-3 sm:gap-4">
                       <div>
-                        <h3 className="text-2xl font-bold text-white">
+                        <h3 className="text-lg sm:text-2xl font-bold text-white">
                           {service.title}
                         </h3>
-                        <p className="text-sm text-slate-400">
+                        <p className="text-xs sm:text-sm text-slate-400">
                           {service.subtitle}
                         </p>
                       </div>
                     </div>
-                    <div className="text-2xl transition-transform duration-300 group-hover:rotate-180">
+                    <div className="text-xl sm:text-2xl transition-transform duration-300 group-hover:rotate-180 shrink-0">
                       ↓
                     </div>
                   </div>

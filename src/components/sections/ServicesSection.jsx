@@ -34,37 +34,37 @@ export default function ServicesSection() {
   ];
 
   return (
-    <section className="relative w-full bg-white py-16 md:py-24">
+    <section className="relative w-full bg-white py-12 sm:py-16 md:py-24">
       {/* Gradient background elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl "></div>
+      <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-blue-100/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-48 sm:w-80 h-48 sm:h-80 bg-purple-100/30 rounded-full blur-3xl "></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-3 sm:mb-4">
             Our Services
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
             Comprehensive 3D printing solutions tailored to your needs
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
           {services.map((service, index) => (
             <div
               key={service.id}
-              className="group relative bg-white border border-slate-200 rounded-2xl p-8 md:p-10 hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:-translate-y-1"
+              className="group relative bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 md:p-10 hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:-translate-y-1"
             >
               {/* Accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-black rounded-t-2xl transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
 
               {/* Content */}
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
                 {service.title}
               </h3>
-              <p className="text-slate-600 mb-6 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-600 mb-6 leading-relaxed">
                 {service.description}
               </p>
 
@@ -73,10 +73,10 @@ export default function ServicesSection() {
                 {service.features.map((feature, idx) => (
                   <li
                     key={idx}
-                    className="flex items-center gap-3 text-slate-700"
+                    className="flex items-center gap-3 text-slate-700 text-sm sm:text-base"
                   >
                     <svg
-                      className="w-5 h-5 text-blue-600 "
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -90,17 +90,16 @@ export default function ServicesSection() {
                   </li>
                 ))}
               </ul>
-
             </div>
           ))}
         </div>
 
         {/* CTA Section */}
-        <div className="mt-16 md:mt-20 text-center">
-          <p className="text-slate-600 text-lg mb-6">
+        <div className="mt-12 sm:mt-16 md:mt-20 text-center">
+          <p className="text-slate-600 text-base sm:text-lg mb-6">
             Ready to transform your ideas?
           </p>
-          <button className="px-8 py-4 bg-black text-white font-bold rounded-lg text-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-black text-white font-bold rounded-lg text-base sm:text-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             Get Started Today
           </button>
         </div>

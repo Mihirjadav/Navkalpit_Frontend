@@ -42,30 +42,20 @@ export default function Service() {
     ? Object.keys(materialPricesByTech[tech] || {})
     : [];
 
-const allowedExtensions = [
-  "stl",
-  "obj",
-  "step",
-  "stp",
-  "iges",
-  "3mf",
-  "amf",
-];
+  const allowedExtensions = ["stl", "obj", "step", "stp", "iges", "3mf", "amf"];
 
-const handleFile = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const extension = file.name.split(".").pop().toLowerCase();
+    const extension = file.name.split(".").pop().toLowerCase();
 
-  if (!allowedExtensions.includes(extension)) {
-    alert("Invalid file type. Please upload a valid 3D file.");
-    e.target.value = ""; // reset input
-    return;
-  }
-
-};
-
+    if (!allowedExtensions.includes(extension)) {
+      alert("Invalid file type. Please upload a valid 3D file.");
+      e.target.value = ""; // reset input
+      return;
+    }
+  };
 
   function resetSelections() {
     setMaterial(null);
@@ -95,22 +85,26 @@ const handleFile = (e) => {
     tech && material ? materialPricesByTech[tech]?.[material] : null;
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-900 to-black text-slate-100 py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        <header className="text-center mb-10">
-          <h1 className="text-4xl font-bold">Choose Service & Upload</h1>
-          <p className="text-slate-400 mt-2">
+    <div className="min-h-screen bg-linear-to-b from-slate-900 to-black text-slate-100 py-12 sm:py-16 md:py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <header className="text-center mb-8 sm:mb-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+            Choose Service & Upload
+          </h1>
+          <p className="text-sm sm:text-base text-slate-400 mt-2">
             Select Service, material, color, upload STL and verify design.
           </p>
         </header>
 
         {/* Tech Selector */}
-        <section className="bg-slate-800/40 border border-slate-700 rounded-2xl p-6 mb-8">
-          <h2 className="text-lg font-semibold mb-4">1. Select Service</h2>
-          <div className="flex gap-4">
+        <section className="bg-slate-800/40 border border-slate-700 rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+          <h2 className="text-base sm:text-lg font-semibold mb-4">
+            1. Select Service
+          </h2>
+          <div className="flex gap-3 sm:gap-4 flex-wrap">
             <button
               onClick={() => onSelectTech("FDM")}
-              className={`px-5 py-3 rounded-xl font-semibold transition ${
+              className={`px-4 sm:px-5 py-2 sm:py-3 rounded-xl font-semibold transition text-sm sm:text-base ${
                 tech === "FDM"
                   ? "bg-white text-slate-900 border-transparent"
                   : "bg-slate-700/60 text-slate-200 border-slate-600"
@@ -120,7 +114,7 @@ const handleFile = (e) => {
             </button>
             <button
               onClick={() => onSelectTech("STL")}
-              className={`px-5 py-3 rounded-xl font-semibold transition ${
+              className={`px-4 sm:px-5 py-2 sm:py-3 rounded-xl font-semibold transition text-sm sm:text-base ${
                 tech === "STL"
                   ? "bg-white text-slate-900 border-transparent"
                   : "bg-slate-700/60 text-slate-200 border-slate-600"
@@ -133,16 +127,16 @@ const handleFile = (e) => {
 
         {/* Material (FDM) */}
         {tech === "FDM" && (
-          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">
+          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold mb-4">
               2. Choose Material (FDM)
             </h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {materialsForCurrentTech.map((m) => (
                 <button
                   key={m}
                   onClick={() => setMaterial(m)}
-                  className={`px-4 py-2 rounded-lg border font-medium flex items-center gap-3 ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg border font-medium flex items-center gap-2 text-xs sm:text-sm ${
                     material === m
                       ? "bg-white text-slate-900 border-transparent"
                       : "bg-slate-700/60 text-slate-200 border-slate-600"
@@ -160,16 +154,16 @@ const handleFile = (e) => {
 
         {/* Material (STL) */}
         {tech === "STL" && (
-          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">
+          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold mb-4">
               2. Choose Material (STL)
             </h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {materialsForCurrentTech.map((m) => (
                 <button
                   key={m}
                   onClick={() => setMaterial(m)}
-                  className={`px-4 py-2 rounded-lg border font-medium flex items-center gap-3 ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg border font-medium flex items-center gap-2 text-xs sm:text-sm ${
                     material === m
                       ? "bg-white text-slate-900 border-transparent"
                       : "bg-slate-700/60 text-slate-200 border-slate-600"
@@ -187,16 +181,18 @@ const handleFile = (e) => {
 
         {/* Color Picker */}
         {tech && (
-          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-4">3. Pick a Color</h2>
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <div className="flex gap-3 items-center">
+          <section className="bg-slate-800/30 border border-slate-700 rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold mb-4">
+              3. Pick a Color
+            </h2>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <div className="flex gap-2 sm:gap-3 items-center flex-wrap">
                 {colors.map((c) => (
                   <button
                     key={c}
                     onClick={() => setColor(c)}
                     aria-label={`color-${c}`}
-                    className={`w-10 h-10 rounded-full border-2 ${
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 ${
                       color === c ? "border-white" : "border-slate-700"
                     }`}
                     style={{ background: c }}
